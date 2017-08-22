@@ -8,7 +8,7 @@ class EventPubSub {
         this.unSubscribe = this.off;
     }
 
-    on( type, handler ) {
+    on( type, handler, once ) {
         if ( !handler ) {
             throw new ReferenceError( 'handler not defined.' );
         }
@@ -17,13 +17,13 @@ class EventPubSub {
             this._events_[ type ] = [];
         }
 
+        handler.once = once;
         this._events_[ type ].push( handler );
         return this;
     }
 
     once( type, handler ) {
-	handler.once = true;
-	this.on( type, handler );
+	return this.on( type, handler, true );
     }
 
     off( type, handler ) {
